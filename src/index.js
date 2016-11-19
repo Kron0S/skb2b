@@ -1,7 +1,11 @@
 import express from 'express'
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.toLowerCase().slice(1);
+}
 function getName(fullname) {
-	const re = new RegExp('([^\\s0-9]+)\\s?([^\\s0-9]+)?\\s?([^\\s0-9]+)?');
+  fullname = fullname.trim();
+	const re = new RegExp('([^\\s0-9]+)\\s*([^\\s0-9]+)?\\s*([^\\s0-9]+)?');
 	const parts = fullname.match(re);
 	if (!parts) {
 		throw "Invalid fullname";
@@ -19,15 +23,18 @@ function getName(fullname) {
 	if (parts[0] != fullname) {
 		throw "Invalid fullname";
 	}
-	let name = parts[3];
+	let name = capitalizeFirstLetter(parts[3]);
 	if (name.indexOf('_') !== -1 ) {
 		throw "Invalid fullname";
 	}
+	if (name.indexOf('/') !== -1 ) {
+		throw "Invalid fullname";
+	}
 	if (parts[1]) {
-		name += ' ' + parts[1].substr(0,1) + '.';
+		name += ' ' + capitalizeFirstLetter(parts[1].substr(0,1)) + '.';
 	}
 	if (parts[2]) {
-		name += ' ' + parts[2].substr(0,1) + '.';
+		name += ' ' + capitalizeFirstLetter(parts[2].substr(0,1)) + '.';
 	}
 	return name;
 }
